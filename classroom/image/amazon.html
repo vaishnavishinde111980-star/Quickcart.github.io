@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Clone Full</title>
+
+<!-- Font Awesome & Google Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',Arial,sans-serif;}
+body{background:#f2f2f2;}
+a{text-decoration:none;color:white;}
+
+/* ===== NAVBAR ===== */
+.navbar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 12px;
+  background:#0f1111;
+  color:white;
+}
+.nav-border{border:1px solid transparent;}
+.nav-border:hover{border:1px solid white;border-radius:2px;}
+.nav-logo{width:160px;height:50px;}
+.logo{width:100%;height:100%;background:url('https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg') no-repeat center/contain;}
+.delivery{padding:5px 8px;}
+.line1{font-size:12px;color:#ccc;}
+.line2-row{display:flex;gap:5px;align-items:center;}
+.line2{font-size:14px;font-weight:700;}
+.search-wrapper{flex:1;max-width:650px;border:2px solid transparent;border-radius:4px;}
+.search-wrapper:hover{border:2px solid #f3a847;}
+.search-wrapper:focus-within{border:2px solid #f08804;box-shadow:0 0 0 3px rgba(240,136,4,0.35);}
+.search-bar{display:flex;}
+.search-bar select{padding:9px;border:none;background:#e6e6e6;}
+.search-bar input{width:100%;padding:9px;border:none;outline:none;}
+.search-bar button{padding:9px 14px;border:none;background:#febd69;cursor:pointer;}
+.sign-in,.orders{padding:5px 10px;}
+.sign-in span,.orders span{font-size:12px;color:#ccc;}
+.account,.and-orders{font-weight:700;}
+.cart{display:flex;align-items:center;gap:5px;font-weight:700;padding:6px 10px;}
+.cart i{font-size:22px;}
+.panal{display:flex;align-items:center;gap:15px;padding:8px 12px;background:#232f3e;}
+.panel-link{padding:5px 8px;border:1px solid transparent;}
+.panel-link:hover{border:1px solid white;border-radius:2px;}
+.hero-section{height:350px;background:url('https://images-eu.ssl-images-amazon.com/images/G/31/AmazonVideo/2023/X-site/prime/Sep/prime1._CB601956774_.jpg') center/cover no-repeat;}
+.shop-section{display:flex;flex-wrap:wrap;justify-content:space-evenly;gap:20px;padding:20px;background:#e3e6e6;}
+.box{width:23%;background:white;padding:15px;border-radius:5px;}
+.box img{width:100%;height:200px;object-fit:cover;}
+.box h2{font-size:18px;margin-bottom:10px;}
+.box p{color:#007185;cursor:pointer;}
+.tab-content{display:none;}
+.tab-content.active{display:block;padding:20px;}
+input,button{font-family:'Roboto',Arial,sans-serif;}
+input{padding:8px;margin:5px 0;width:100%;max-width:300px;}
+button{padding:8px;background:#febd69;border:none;cursor:pointer;}
+</style>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <a class="nav-logo nav-border nav-link" data-tab="Home"><div class="logo"></div></a>
+  <a class="delivery nav-border nav-link" data-tab="Home">
+    <div class="line1">Deliver to</div>
+    <div class="line2-row"><i class="fa-solid fa-location-dot"></i><div class="line2">India</div></div>
+  </a>
+  <div class="search-wrapper">
+    <div class="search-bar">
+      <select><option>All</option></select>
+      <input type="text" placeholder="Search Amazon" id="searchInput">
+      <button onclick="searchProducts()"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+  </div>
+  <a class="sign-in nav-border nav-link" data-tab="SignIn"><span>Hello, Sign in</span><div class="account">Account & Lists</div></a>
+  <a class="orders nav-border nav-link" data-tab="Orders"><span>Returns</span><div class="and-orders">& Orders</div></a>
+  <a class="cart nav-border nav-link" data-tab="Cart"><i class="fa-solid fa-cart-shopping"></i>Cart (<span id="cartCount">0</span>)</a>
+</div>
+
+<!-- PANEL -->
+<div class="panal">
+  <a class="panel-link nav-link" data-tab="Home">☰ All</a>
+  <a class="panel-link nav-link">Today's Deals</a>
+  <a class="panel-link nav-link">Customer Service</a>
+  <a class="panel-link nav-link">Registry</a>
+  <a class="panel-link nav-link">Gift Cards</a>
+  <a class="panel-link nav-link">Sell</a>
+</div>
+
+<!-- TABS -->
+<div id="Home" class="tab-content active">
+  <div class="hero-section"></div>
+  <div class="shop-section" id="shopSection"></div>
+</div>
+
+<div id="SignIn" class="tab-content">
+  <h2>Sign In / Signup</h2>
+  <input type="email" id="loginEmail" placeholder="Email"><br>
+  <input type="password" id="loginPass" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+  <button onclick="signup()">Signup</button>
+  <p id="loginMsg"></p>
+</div>
+
+<div id="Orders" class="tab-content">
+  <h2>Your Orders</h2>
+  <div id="orderList"></div>
+</div>
+
+<div id="Cart" class="tab-content">
+  <h2>Your Cart</h2>
+  <div id="cartItems"></div>
+  <button onclick="checkout()">Checkout</button>
+</div>
+
+<script>
+/* Firebase Setup */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+/* Cart */
+let cart = [];
+
+/* Load Products */
+const shopSection = document.getElementById('shopSection');
+function loadProducts(){
+  shopSection.innerHTML='';
+  db.collection('products').get().then(snapshot=>{
+    snapshot.forEach(doc=>{
+      const p = doc.data();
+      const box = document.createElement('div');
+      box.className='box';
+      box.innerHTML=`
+        <h2>${p.name}</h2>
+        <img src="${p.image}">
+        <p>₹${p.price}</p>
+        <button onclick="addCart('${p.name}',${p.price})">Add to Cart</button>
+      `;
+      shopSection.appendChild(box);
+    });
+  });
+}
+
+/* Add Cart */
+function addCart(name,price){
+  cart.push({name,price});
+  document.getElementById('cartCount').innerText=cart.length;
+  renderCart();
+}
+
+/* Render Cart */
+function renderCart(){
+  const cartDiv=document.getElementById('cartItems');
+  cartDiv.innerHTML='';
+  cart.forEach((item,i)=>{
+    cartDiv.innerHTML+=`<div>${item.name} - ₹${item.price} <button onclick="removeItem(${i})">Remove</button></div>`;
+  });
+}
+
+/* Remove Cart Item */
+function removeItem(index){
+  cart.splice(index,1);
+  document.getElementById('cartCount').innerText=cart.length;
+  renderCart();
+}
+
+/* Checkout */
+function checkout(){
+  auth.onAuthStateChanged(user=>{
+    if(!user){ alert("Login first"); return; }
+    cart.forEach(item=>{
+      db.collection('orders').add({
+        user:user.email, product:item.name, price:item.price, date:new Date()
+      });
+    });
+    alert('Order placed!');
+    cart=[];
+    document.getElementById('cartCount').innerText=0;
+    renderCart();
+  });
+}
+
+/* Login / Signup */
+function login(){
+  const email=document.getElementById('loginEmail').value;
+  const pass=document.getElementById('loginPass').value;
+  auth.signInWithEmailAndPassword(email,pass)
+    .then(()=>document.getElementById('loginMsg').innerText='Login Success')
+    .catch(e=>document.getElementById('loginMsg').innerText=e.message);
+}
+function signup(){
+  const email=document.getElementById('loginEmail').value;
+  const pass=document.getElementById('loginPass').value;
+  auth.createUserWithEmailAndPassword(email,pass)
+    .then(()=>document.getElementById('loginMsg').innerText='Signup Success')
+    .catch(e=>document.getElementById('loginMsg').innerText=e.message);
+}
+
+/* Load Orders */
+auth.onAuthStateChanged(user=>{
+  if(user){
+    db.collection('orders').where('user','==',user.email).get().then(snapshot=>{
+      const orderList=document.getElementById('orderList');
+      orderList.innerHTML='';
+      snapshot.forEach(doc=>{
+        const o=doc.data();
+        orderList.innerHTML+=`<div>${o.product} - ₹${o.price}</div>`;
+      });
+    });
+  }
+});
+
+/* Tab Functionality */
+const navLinks=document.querySelectorAll('.nav-link');
+const tabs=document.querySelectorAll('.tab-content');
+navLinks.forEach(link=>{
+  link.addEventListener('click',()=>{
+    const tab=link.getAttribute('data-tab');
+    if(!tab) return;
+    tabs.forEach(t=>t.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+  });
+});
+
+/* Search Products */
+function searchProducts(){
+  const text=document.getElementById('searchInput').value.toLowerCase();
+  shopSection.innerHTML='';
+  db.collection('products').get().then(snapshot=>{
+    snapshot.forEach(doc=>{
+      const p=doc.data();
+      if(p.name.toLowerCase().includes(text)){
+        const box = document.createElement('div');
+        box.className='box';
+        box.innerHTML=`
+          <h2>${p.name}</h2>
+          <img src="${p.image}">
+          <p>₹${p.price}</p>
+          <button onclick="addCart('${p.name}',${p.price})">Add to Cart</button>
+        `;
+        shopSection.appendChild(box);
+      }
+    });
+  });
+}
+
+/* Initial Load */
+loadProducts();
+</script>
+</body>
+</html>

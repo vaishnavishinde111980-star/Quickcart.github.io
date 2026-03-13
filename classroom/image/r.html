@@ -1,0 +1,27 @@
+<!-- Tabs Panel section just below navbar -->
+<div class="tabs">
+  <div onclick="togglePanel('cart')">Cart</div>
+  <div onclick="togglePanel('login')">Login</div>
+  <div onclick="togglePanel('orders')">Orders</div>
+</div>
+
+<!-- Panels -->
+<div class="cart-panel" id="cart-panel">
+  <h3>Your Cart</h3>
+  <div id="cart-items"></div>
+  <hr>
+  <p>Total: ₹<span id="cart-total">0</span></p>
+  <button onclick="checkout()">Checkout</button>
+</div>
+
+<div id="login-modal" class="cart-panel">
+  <h3>Sign In</h3>
+  <input type="text" id="username" placeholder="Username" style="width:90%; padding:5px; margin:5px 0;"><br>
+  <input type="password" id="password" placeholder="Password" style="width:90%; padding:5px; margin:5px 0;"><br>
+  <button id="login-submit" style="padding:6px 12px; margin-top:5px;">Login</button>
+</div>
+
+<div id="orders-modal" class="cart-panel">
+  <h3>Your Orders</h3>
+  <div id="order-list">No orders yet.</div>
+</div>

@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "Amazon",
+			"path": "../../../Desktop/AMAZON CLONE/Amazon"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "classroom"
+	}
+}

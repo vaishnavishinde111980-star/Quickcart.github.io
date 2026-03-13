@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Clone Advanced</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body{font-family:Arial;background:#f2f2f2;margin:0}
+
+/* NAVBAR */
+.navbar{
+display:flex;
+align-items:center;
+background:#131921;
+color:white;
+padding:10px;
+gap:20px;
+}
+
+.navbar div{cursor:pointer}
+
+.search{
+flex:1;
+display:flex;
+}
+
+.search input{
+flex:1;
+padding:8px;
+}
+
+.search button{
+background:#febd69;
+border:none;
+padding:8px 12px;
+}
+
+.cart{
+font-weight:bold;
+}
+
+.shop{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+padding:20px;
+}
+
+.product{
+background:white;
+padding:10px;
+border-radius:5px;
+text-align:center;
+}
+
+.product img{
+width:100%;
+height:150px;
+object-fit:cover;
+}
+
+button{
+background:#febd69;
+border:none;
+padding:6px 10px;
+cursor:pointer;
+}
+
+.panel{
+position:fixed;
+right:10px;
+top:70px;
+background:white;
+width:300px;
+padding:10px;
+border:1px solid #ccc;
+display:none;
+max-height:80vh;
+overflow:auto;
+}
+
+.item{
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+<div onclick="changeLocation()">Deliver to <span id="location">India</span></div>
+
+<div id="loginTab" onclick="loginUser()">
+Hello, Sign in
+</div>
+
+<div onclick="openOrders()">
+Returns & Orders
+</div>
+
+<div class="search">
+<input id="searchBox">
+<button onclick="searchProduct()">Search</button>
+</div>
+
+<div class="cart" onclick="toggleCart()">
+<i class="fa fa-shopping-cart"></i> Cart
+</div>
+
+</div>
+
+<div class="shop" id="shop"></div>
+
+<!-- CART -->
+<div class="panel" id="cartPanel">
+<h3>Your Cart</h3>
+<div id="cartItems"></div>
+<hr>
+Total ₹<span id="total">0</span>
+<br><br>
+<button onclick="checkout()">Checkout</button>
+</div>
+
+<!-- ORDERS -->
+<div class="panel" id="orderPanel">
+<h3>Your Orders</h3>
+<div id="orders"></div>
+</div>
+
+<script>
+
+/* PRODUCTS DATABASE */
+const products = [
+{id:1,name:"Clothing",price:500,image:"https://picsum.photos/200?1"},
+{id:2,name:"Electronics",price:2000,image:"https://picsum.photos/200?2"},
+{id:3,name:"Furniture",price:1500,image:"https://picsum.photos/200?3"},
+{id:4,name:"Beauty",price:400,image:"https://picsum.photos/200?4"},
+{id:5,name:"Kitchen",price:250,image:"https://picsum.photos/200?5"},
+{id:6,name:"Pet Care",price:350,image:"https://picsum.photos/200?6"},
+]
+
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+let orders = JSON.parse(localStorage.getItem("orders")) || []
+let user = localStorage.getItem("user")
+
+/* LOGIN */
+function loginUser(){
+
+if(user){
+alert("Logged in as "+user)
+return
+}
+
+const name = prompt("Enter username")
+
+if(name){
+user=name
+localStorage.setItem("user",name)
+document.getElementById("loginTab").innerText="Hello "+name
+}
+
+}
+
+/* LOCATION */
+function changeLocation(){
+const city=prompt("Enter your location")
+if(city){
+document.getElementById("location").innerText=city
+}
+}
+
+/* PRODUCTS */
+function renderProducts(list){
+
+const shop=document.getElementById("shop")
+shop.innerHTML=""
+
+list.forEach(p=>{
+
+shop.innerHTML+=`
+<div class="product">
+<h3>${p.name}</h3>
+<img src="${p.image}">
+<p>₹${p.price}</p>
+<button onclick="addCart(${p.id})">Add to Cart</button>
+</div>
+`
+
+})
+
+}
+
+/* ADD CART */
+function addCart(id){
+
+const product=products.find(p=>p.id==id)
+
+cart.push(product)
+
+localStorage.setItem("cart",JSON.stringify(cart))
+
+renderCart()
+
+document.getElementById("cartPanel").style.display="block"
+
+}
+
+/* CART */
+function renderCart(){
+
+let total=0
+
+const div=document.getElementById("cartItems")
+
+div.innerHTML=""
+
+cart.forEach((p,i)=>{
+
+total+=p.price
+
+div.innerHTML+=`
+<div class="item">
+${p.name} ₹${p.price}
+<button onclick="removeCart(${i})">Remove</button>
+</div>
+`
+
+})
+
+document.getElementById("total").innerText=total
+
+}
+
+/* REMOVE */
+function removeCart(i){
+
+cart.splice(i,1)
+
+localStorage.setItem("cart",JSON.stringify(cart))
+
+renderCart()
+
+}
+
+/* CART TOGGLE */
+function toggleCart(){
+
+const panel=document.getElementById("cartPanel")
+
+panel.style.display=panel.style.display=="block"?"none":"block"
+
+}
+
+/* CHECKOUT */
+function checkout(){
+
+if(cart.length==0){
+alert("Cart empty")
+return
+}
+
+orders.push(...cart)
+
+localStorage.setItem("orders",JSON.stringify(orders))
+
+cart=[]
+
+localStorage.setItem("cart",JSON.stringify(cart))
+
+renderCart()
+
+alert("Order placed!")
+
+}
+
+/* ORDERS */
+function openOrders(){
+
+const panel=document.getElementById("orderPanel")
+
+panel.style.display="block"
+
+const div=document.getElementById("orders")
+
+div.innerHTML=""
+
+orders.forEach((o,i)=>{
+
+div.innerHTML+=`
+<div class="item">
+${o.name} ₹${o.price}
+<button onclick="returnItem(${i})">Return</button>
+</div>
+`
+
+})
+
+}
+
+/* RETURN PRODUCT */
+function returnItem(i){
+
+orders.splice(i,1)
+
+localStorage.setItem("orders",JSON.stringify(orders))
+
+openOrders()
+
+}
+
+/* SEARCH */
+function searchProduct(){
+
+const text=document.getElementById("searchBox").value.toLowerCase()
+
+const filtered=products.filter(p=>p.name.toLowerCase().includes(text))
+
+renderProducts(filtered)
+
+}
+
+/* INIT */
+
+if(user){
+document.getElementById("loginTab").innerText="Hello "+user
+}
+
+renderProducts(products)
+renderCart()
+
+</script>
+
+</body>
+</html>

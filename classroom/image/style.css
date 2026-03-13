@@ -1,0 +1,166 @@
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+body {
+  background-color: #e3e6e6;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background-color: #0f1111;
+  color: white;
+}
+
+.nav-logo {
+  width: 160px;
+  height: 60px;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  background: url("amazon_logo.png") no-repeat center;
+  background-size: contain;
+}
+
+/* Deliver */
+.delivery .line1 {
+  font-size: 12px;
+  color: #ccc;
+}
+.delivery .line2-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.delivery .line2 {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Search bar */
+.search-bar {
+  display: flex;
+  flex: 1;
+  max-width: 600px;
+  height: 600;
+}
+.search-bar select,
+.search-bar input {
+  padding: 8px;
+  border: none;
+}
+.search-bar select {
+  border-radius: 4px 0 0 4px;
+}
+.search-bar button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #febd69;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+/* Sign in & orders */
+.sign-in span:first-child,
+.orders span:first-child {
+  font-size: 12px;
+  color: #ccc;
+}
+.account,
+.and-orders {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Cart */
+.cart {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+.cart i {
+  font-size: 22px;
+}
+
+/* ================= PANEL ================= */
+.panal {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 8px 12px;
+  background-color: #232f3e;
+  color: white;
+}
+.panal div {
+  cursor: pointer;
+  padding: 5px 8px;
+}
+.panal div:hover {
+  background-color: #37475a;
+  border-radius: 4px;
+}
+
+/* ================= HERO SECTION ================= */
+.hero-section {
+  background-image:  url("hero_image.jpg");
+  background-size: cover
+  height: 400px;
+  display:flex;
+  justify-content:center:
+  ailgn-items:flex-end:
+}
+
+/* ================= SHOP SECTION ================= */
+.shop-section {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 20px;
+  padding: 20px;
+}
+
+.box {
+  width: 23%;
+  background-color: white;
+  padding: 15px;
+}
+
+.box h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.box img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.box p {
+  margin-top: 10px;
+  color: #007185;
+  cursor: pointer;
+}
+/* ===== HERO FINAL FORCE FIX ===== */
+.hero-section {
+  width: 100%;
+  height: 520px;
+  background: 
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.6) 0%,
+      rgba(0,0,0,0.2) 45%,
+      #e3e6e6 100%
+    ),
+    url("./hero_image.jpg") no-repeat center center / cover;
+}

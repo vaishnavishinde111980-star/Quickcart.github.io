@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Clone</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* ===== GENERAL ===== */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Roboto',Arial,sans-serif;
+}
+body{
+  background:#f2f2f2;
+}
+a{
+  text-decoration:none;
+  color:white;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 12px;
+  background:#0f1111;
+  color:white;
+}
+.nav-border{
+  border:1px solid transparent;
+}
+.nav-border:hover{
+  border:1px solid white;
+  border-radius:2px;
+}
+
+/* Logo */
+.nav-logo{
+  width:160px;
+  height:50px;
+}
+.logo{
+  width:100%;
+  height:100%;
+  background:url("amazon_logo.png") no-repeat center/contain;
+}
+
+/* Deliver */
+.delivery{
+  padding:5px 8px;
+}
+.line1{
+  font-size:12px;
+  color:#ccc;
+}
+.line2-row{
+  display:flex;
+  gap:5px;
+  align-items:center;
+}
+.line2{
+  font-size:14px;
+  font-weight:700;
+}
+
+/* ===== SEARCH BAR ===== */
+.search-wrapper{
+  flex:1;
+  max-width:650px;
+  border:2px solid transparent;
+  border-radius:4px;
+}
+.search-wrapper:hover{
+  border:2px solid #f3a847;
+}
+.search-wrapper:focus-within{
+  border:2px solid #f08804;
+  box-shadow:0 0 0 3px rgba(240,136,4,0.35);
+}
+.search-bar{
+  display:flex;
+}
+.search-bar select{
+  padding:9px;
+  border:none;
+  background:#e6e6e6;
+}
+.search-bar input{
+  width:100%;
+  padding:9px;
+  border:none;
+  outline:none;
+}
+.search-bar button{
+  padding:9px 14px;
+  border:none;
+  background:#febd69;
+  cursor:pointer;
+}
+
+/* Sign in / Orders */
+.sign-in,.orders{
+  padding:5px 10px;
+}
+.sign-in span,
+.orders span{
+  font-size:12px;
+  color:#ccc;
+}
+.account,.and-orders{
+  font-weight:700;
+}
+
+/* Cart */
+.cart{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-weight:700;
+  padding:6px 10px;
+}
+.cart i{
+  font-size:22px;
+}
+
+/* ===== PANEL ===== */
+.panal{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:8px 12px;
+  background:#232f3e;
+}
+.panel-link{
+  padding:5px 8px;
+  border:1px solid transparent;
+}
+.panel-link:hover{
+  border:1px solid white;
+  border-radius:2px;
+}
+
+/* ===== HERO ===== */
+.hero-section{
+  height:350px;
+  background:url("hero_image.jpg") center/cover no-repeat;
+}
+
+/* ===== SHOP ===== */
+.shop-section{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-evenly;
+  gap:20px;
+  padding:20px;
+  background:#e3e6e6;
+}
+.box{
+  width:23%;
+  background:white;
+  padding:15px;
+}
+.box img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+.box h2{
+  font-size:18px;
+  margin-bottom:10px;
+}
+.box p{
+  color:#007185;
+  cursor:pointer;
+}
+
+/* ===== TAB PAGES ===== */
+.tab-content{
+  display:none;
+}
+.tab-content.active{
+  display:block;
+  padding:20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+  <a class="nav-logo nav-border nav-link" data-tab="Home">
+    <div class="logo"></div>
+  </a>
+
+  <a class="delivery nav-border nav-link" data-tab="Home">
+    <div class="line1">Deliver to</div>
+    <div class="line2-row">
+      <i class="fa-solid fa-location-dot"></i>
+      <div class="line2">India</div>
+    </div>
+  </a>
+
+  <div class="search-wrapper">
+    <div class="search-bar">
+      <select><option>All</option></select>
+      <input type="text" placeholder="Search Amazon">
+      <button><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+  </div>
+
+  <a class="sign-in nav-border nav-link" data-tab="SignIn">
+    <span>Hello, Sign in</span>
+    <div class="account">Account & Lists</div>
+  </a>
+
+  <a class="orders nav-border nav-link" data-tab="Orders">
+    <span>Returns</span>
+    <div class="and-orders">& Orders</div>
+  </a>
+
+  <a class="cart nav-border nav-link" data-tab="Cart">
+    <i class="fa-solid fa-cart-shopping"></i>
+    Cart
+  </a>
+
+</div>
+
+<!-- PANEL -->
+<div class="panal">
+  <a class="panel-link nav-link" data-tab="Home">☰ All</a>
+  <a class="panel-link nav-link">Today's Deals</a>
+  <a class="panel-link nav-link">Customer Service</a>
+  <a class="panel-link nav-link">Registry</a>
+  <a class="panel-link nav-link">Gift Cards</a>
+  <a class="panel-link nav-link">Sell</a>
+</div>
+
+<!-- ===== TABS CONTENT ===== -->
+
+<!-- HOME TAB -->
+<div id="Home" class="tab-content active">
+  <div class="hero-section"></div>
+
+  <div class="shop-section">
+
+    <!-- Box 1–4 -->
+    <div class="box"><h2>Clothing</h2><img src="box1_image.jpg"><p>See more</p></div>
+    <div class="box"><h2>Health & Personal Care</h2><img src="box2_image.jpg"><p>See more</p></div>
+    <div class="box"><h2>Furniture</h2><img src="box3_image.jpg"><p>See more</p></div>
+    <div class="box"><h2>Electronics</h2><img src="box4_image.jpg"><p>See more</p></div>
+
+  </div>
+</div>
+
+<!-- SIGN IN TAB -->
+<div id="SignIn" class="tab-content">
+  <h2>Sign In</h2>
+  <input type="text" placeholder="Email"><br><br>
+  <input type="password" placeholder="Password"><br><br>
+  <button>Login</button>
+</div>
+
+<!-- ORDERS TAB -->
+<div id="Orders" class="tab-content">
+  <h2>Your Orders</h2>
+  <p>No orders yet</p>
+</div>
+
+<!-- CART TAB -->
+<div id="Cart" class="tab-content">
+  <h2>Your Cart</h2>
+  <p>Cart is empty</p>
+</div>
+
+<!-- ===== AUTO BOX 5 → 53 ===== -->
+<script>
+const shopSection = document.querySelector('.shop-section');
+const titles = [
+  "Beauty Picks","Pet Care","Home Decor","Kitchen Essentials",
+  "Books","Gaming","Mobile Accessories","Sports & Fitness",
+  "Travel","Office Products"
+];
+
+for(let i=5;i<=53;i++){
+  const box=document.createElement("div");
+  box.className="box";
+  box.innerHTML=`
+    <h2>${titles[i % titles.length]}</h2>
+    <img src="box${i}_image.jpg">
+    <p>See more</p>
+  `;
+  shopSection.appendChild(box);
+}
+
+// ===== TAB FUNCTIONALITY =====
+const navLinks = document.querySelectorAll(".nav-link");
+const tabs = document.querySelectorAll(".tab-content");
+
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    const tab = link.getAttribute("data-tab");
+    if(!tab) return;
+    tabs.forEach(t => t.classList.remove("active"));
+    document.getElementById(tab).classList.add("active");
+  });
+});
+</script>
+
+</body>
+</html>

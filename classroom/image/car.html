@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Clone with Cart & Login</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0; padding:0; box-sizing:border-box; font-family:'Roboto',Arial,sans-serif;}
+body{background:#f2f2f2;}
+a{text-decoration:none; color:white;}
+
+/* Navbar */
+.navbar{display:flex; align-items:center; gap:10px; padding:8px 12px; background:#0f1111; color:white; position:relative;}
+.nav-border{border:1px solid transparent; padding:5px 8px;}
+.nav-border:hover{border:1px solid white; border-radius:2px;}
+.nav-logo{width:160px; height:50px;}
+.logo{width:100%; height:100%; background:url("amazon_logo.png") no-repeat center/contain;}
+.delivery{position:relative;}
+.line1{font-size:12px; color:#ccc;}
+.line2-row{display:flex; gap:5px; align-items:center;}
+.line2{font-size:14px; font-weight:700;}
+.search-wrapper{flex:1; max-width:650px; border:2px solid transparent; border-radius:4px;}
+.search-wrapper:hover{border:2px solid #f3a847;}
+.search-wrapper:focus-within{border:2px solid #f08804; box-shadow:0 0 0 3px rgba(240,136,4,0.35);}
+.search-bar{display:flex;}
+.search-bar select{padding:9px; border:none; background:#e6e6e6;}
+.search-bar input{width:100%; padding:9px; border:none; outline:none;}
+.search-bar button{padding:9px 14px; border:none; background:#febd69; cursor:pointer;}
+.sign-in,.orders{padding:5px 10px; position:relative;}
+.sign-in span,.orders span{font-size:12px; color:#ccc;}
+.account,.and-orders{font-weight:700;}
+.cart{display:flex; align-items:center; gap:5px; font-weight:700; padding:6px 10px; cursor:pointer;}
+.cart i{font-size:22px;}
+
+/* Hero */
+.hero-section{height:350px; background:url("hero_image.jpg") center/cover no-repeat; margin-bottom:20px;}
+
+/* Shop */
+.shop-section{display:flex; flex-wrap:wrap; justify-content:space-evenly; gap:20px; padding:20px; background:#e3e6e6;}
+.box{width:23%; background:white; padding:15px; border-radius:4px; transition: transform 0.2s; position: relative;}
+.box:hover{transform: scale(1.03);}
+.box img{width:100%; height:200px; object-fit:cover; border-radius:4px;}
+.box h2{font-size:18px; margin-bottom:10px;}
+.box p, .box button{color:#007185; cursor:pointer;}
+.box button{border:none; background:#febd69; padding:8px 12px; border-radius:4px; font-weight:700;}
+.box button:hover{background:#f08804; color:white;}
+
+/* Cart Panel */
+.cart-panel{position:fixed; top:70px; right:10px; width:300px; max-height:80vh; background:white; border:1px solid #ccc; padding:10px; overflow-y:auto; box-shadow: 0 5px 10px rgba(0,0,0,0.2); border-radius:4px; display:none; z-index:1000;}
+.cart-panel h3{margin-bottom:10px;}
+.cart-item{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+.cart-item img{width:50px; height:50px; object-fit:cover; border-radius:4px;}
+.cart-item button{background:red; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;}
+.cart-item button:hover{background:#a80000;}
+
+/* Login Modal */
+#login-modal,#orders-modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:2000;}
+.modal-content{background:white; padding:20px; border-radius:6px; width:300px; text-align:center;}
+
+/* Delivery Dropdown */
+#delivery-options{display:none; position:absolute; top:50px; left:0; background:white; color:black; padding:5px; border-radius:4px;}
+.city-option{padding:5px; cursor:pointer;}
+.city-option:hover{background:#f0f0f0;}
+
+/* Media */
+@media(max-width:768px){
+  .navbar{flex-direction:column; text-align:center;}
+  .shop-section{flex-direction:column; align-items:center;}
+  .box{width:90%;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <a class="nav-logo nav-border"><div class="logo"></div></a>
+
+  <!-- Delivery Dropdown -->
+  <div class="delivery nav-border" id="delivery-tab">
+    <div class="line1">Deliver to</div>
+    <div class="line2-row">
+      <i class="fa-solid fa-location-dot"></i>
+      <div class="line2" id="delivery-city">India</div>
+      <i class="fa-solid fa-caret-down"></i>
+    </div>
+    <div id="delivery-options">
+      <div class="city-option">Pachora</div>
+      <div class="city-option">Jalgaon</div>
+      <div class="city-option">Jamner</div>
+      <div class="city-option">Nashik</div>
+      <div class="city-option">Mumbai</div>
+    </div>
+  </div>
+
+  <div class="search-wrapper">
+    <div class="search-bar">
+      <select id="filter-category"><option value="all">All</option></select>
+      <input type="text" id="search-bar" placeholder="Search Amazon">
+      <button id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+  </div>
+
+  <!-- Sign In / Account -->
+  <a class="sign-in nav-border" id="sign-in-btn">
+    <span id="hello-text">Hello, Sign in</span>
+    <div class="account" id="account-name">Account & Lists</div>
+  </a>
+
+  <!-- Sign In Modal -->
+  <div id="login-modal">
+    <div class="modal-content">
+      <h3>Sign In</h3>
+      <input type="text" id="username" placeholder="Username" style="width:90%; padding:5px; margin:5px 0;"><br>
+      <input type="password" id="password" placeholder="Password" style="width:90%; padding:5px; margin:5px 0;"><br>
+      <button id="login-submit" style="padding:6px 12px; margin-top:5px;">Login</button>
+    </div>
+  </div>
+
+  <!-- Returns & Orders -->
+  <a class="orders nav-border" id="orders-btn">
+    <span>Returns</span>
+    <div class="and-orders">& Orders</div>
+  </a>
+
+  <!-- Orders Modal -->
+  <div id="orders-modal">
+    <div class="modal-content">
+      <h3>Your Orders</h3>
+      <div id="order-list">No orders yet.</div>
+      <button onclick="document.getElementById('orders-modal').style.display='none'" style="padding:6px 12px; margin-top:5px;">Close</button>
+    </div>
+  </div>
+
+  <a class="cart nav-border" id="cart-btn"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
+</div>
+
+<!-- Hero -->
+<div class="hero-section"></div>
+
+<!-- Shop Section -->
+<div class="shop-section" id="shop"></div>
+
+<!-- Cart Panel -->
+<div class="cart-panel" id="cart-panel">
+  <h3>Your Cart</h3>
+  <div id="cart-items"></div>
+  <hr>
+  <p>Total: ₹<span id="cart-total">0</span></p>
+  <button onclick="checkout()">Checkout</button>
+</div>
+
+<script>
+// ===== PRODUCTS DATABASE =====
+let productsDB = [
+  {id:1,name:"Clothing",category:"Clothing",image:"box1_image.jpg",price:500},
+  {id:2,name:"Health & Personal Care",category:"Health",image:"box2_image.jpg",price:300},
+  {id:3,name:"Furniture",category:"Furniture",image:"box3_image.jpg",price:1500},
+  {id:4,name:"Electronics",category:"Electronics",image:"box4_image.jpg",price:2000},
+  {id:5,name:"Beauty Picks",category:"Beauty",image:"box5_image.jpg",price:400},
+  {id:6,name:"Pet Care",category:"Pet",image:"box6_image.jpg",price:350},
+  {id:7,name:"Home Decor",category:"Home",image:"box7_image.jpg",price:700},
+  {id:8,name:"Kitchen Essentials",category:"Kitchen",image:"box8_image.jpg",price:250}
+];
+
+localStorage.setItem("products", JSON.stringify(productsDB));
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// ===== Render Shop =====
+const shop = document.getElementById("shop");
+function renderShop(products){
+  shop.innerHTML='';
+  products.forEach(p=>{
+    const box = document.createElement("div");
+    box.className='box';
+    box.innerHTML=`<h2>${p.name}</h2><img src="${p.image}"><p>Price: ₹${p.price}</p><button onclick="addToCart(${p.id})">Add to Cart</button>`;
+    shop.appendChild(box);
+  });
+}
+
+// ===== Cart =====
+const cartPanel = document.getElementById("cart-panel");
+const cartItemsDiv = document.getElementById("cart-items");
+const cartTotal = document.getElementById("cart-total");
+
+function renderCart(){
+  cartItemsDiv.innerHTML='';
+  let total=0;
+  cart.forEach((item,index)=>{
+    total+=item.price;
+    const div=document.createElement('div');
+    div.className='cart-item';
+    div.innerHTML=`<img src="${item.image}"><span>${item.name} - ₹${item.price}</span><button onclick="removeFromCart(${index})">X</button>`;
+    cartItemsDiv.appendChild(div);
+  });
+  cartTotal.textContent=total;
+}
+
+function addToCart(id){
+  const product = productsDB.find(p=>p.id===id);
+  cart.push(product);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  renderCart();
+}
+
+function removeFromCart(index){
+  cart.splice(index,1);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  renderCart();
+}
+
+document.getElementById("cart-btn").addEventListener('click', ()=>{cartPanel.style.display = cartPanel.style.display==='block'?'none':'block';});
+document.getElementById("search-btn").addEventListener('click', ()=>{
+  const searchText = document.getElementById("search-bar").value.toLowerCase();
+  renderShop(productsDB.filter(p=>p.name.toLowerCase().includes(searchText)));
+});
+renderShop(productsDB);
+renderCart();
+
+function checkout(){
+  alert("Thank you for your purchase!");
+  localStorage.setItem("cart","[]");
+  cart=[];
+  renderCart();
+}
+
+// ===== Delivery =====
+const deliveryTab = document.getElementById('delivery-tab');
+const deliveryOptions = document.getElementById('delivery-options');
+const deliveryCity = document.getElementById('delivery-city');
+deliveryTab.addEventListener('click', ()=>{deliveryOptions.style.display = deliveryOptions.style.display==='none'?'block':'none';});
+document.querySelectorAll('.city-option').forEach(opt=>{opt.addEventListener('click', ()=>{
+  deliveryCity.textContent=opt.textContent; deliveryOptions.style.display='none';
+})});
+
+// ===== Login =====
+const signInBtn = document.getElementById('sign-in-btn');
+const loginModal = document.getElementById('login-modal');
+const loginSubmit = document.getElementById('login-submit');
+const helloText = document.getElementById('hello-text');
+const accountName = document.getElementById('account-name');
+signInBtn.addEventListener('click', ()=>{loginModal.style.display='flex';});
+loginSubmit.addEventListener('click', ()=>{
+  const username=document.getElementById('username').value;
+  if(username){helloText.textContent=`Hello, ${username}`; accountName.textContent=`Account & Lists`; loginModal.style.display='none'; localStorage.setItem("user",username); alert(`Login Successful! Welcome ${username}`);}});
+const savedUser = localStorage.getItem("user");
+if(savedUser){helloText.textContent=`Hello, ${savedUser}`; accountName.textContent="Account & Lists";}
+
+// ===== Orders =====
+const ordersBtn = document.getElementById('orders-btn');
+const ordersModal = document.getElementById('orders-modal');
+const orderList = document.getElementById('order-list');
+ordersBtn.addEventListener('click', ()=>{
+  ordersModal.style.display='flex';
+  const savedOrders = JSON.parse(localStorage.getItem("cart")) || [];
+  orderList.innerHTML = savedOrders.length===0?"No orders yet.":'';
+  savedOrders.forEach(item=>{
+    const div=document.createElement('div');
+    div.textContent=`${item.name} - ₹${item.price}`;
+    orderList.appendChild(div);
+  });
+});
+</script>
+</body>
+</html>
