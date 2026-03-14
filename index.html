@@ -36,27 +36,8 @@ a{text-decoration:none; color:white;}
 .cart{display:flex; align-items:center; gap:5px; font-weight:700; padding:6px 10px; cursor:pointer;}
 .cart i{font-size:22px;}
 
-/* Hero Slider */
-.hero-section{
-width:100%;
-height:400px;
-overflow:hidden;
-position:relative;
-}
-
-.hero-slide{
-width:100%;
-height:400px;
-object-fit:cover;
-position:absolute;
-opacity:0;
-transition:1s;
-}
-
-.hero-slide.active{
-opacity:1;
-}
-
+/* Hero */
+.hero-section{height:350px; background:url("hero_image.jpg") center/cover no-repeat; margin-bottom:20px;}
 
 /* Shop */
 .shop-section{display:flex; flex-wrap:wrap; justify-content:space-evenly; gap:20px; padding:20px; background:#e3e6e6;}
@@ -159,15 +140,8 @@ opacity:1;
   <a class="cart nav-border" id="cart-btn"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
 </div>
 
-<!-- HERO SLIDER -->
-<div class="hero-section">
-  <img src="hero1_image.jpg" class="hero-slide active">
-  <img src="hero2_image.jpg" class="hero-slide">
-  <img src="hero3_image.jpg" class="hero-slide">
-  <img src="hero4_image.jpg" class="hero-slide">
-  <img src="hero5_image.jpg" class="hero-slide">
-  <img src="hero6_image.jpg" class="hero-slide">
-</div>
+<!-- Hero -->
+<div class="hero-section"></div>
 
 <!-- Shop Section -->
 <div class="shop-section" id="shop"></div>
@@ -183,65 +157,19 @@ opacity:1;
 
 <script>
 // ===== PRODUCTS DATABASE =====
-// PRODUCTS
 let productsDB = [
-{ id:1, name:"Clothing", image:"box1_image.jpg", price:500 },
-{ id:2, name:"Health & Personal Care", image:"box2_image.jpg", price:300 },
-{ id:3, name:"Furniture", image:"box3_image.jpg", price:1500 },
-{ id:4, name:"Electronics", image:"box4_image.jpg", price:2000 },
-{ id:5, name:"Beauty Picks", image:"box5_image.jpg", price:400 },
-{ id:6, name:"Pet Care", image:"box6_image.jpg", price:350 },
-{ id:7, name:"Home Decor", image:"box7_image.jpg", price:700 },
-{ id:8, name:"Kitchen Essentials", image:"box8_image.jpg", price:250 },
-{ id:9, name:"Mobile Phones", image:"box9_image.jpg", price:12000 },
-{ id:10, name:"Laptop Deals", image:"box10_image.jpg", price:45000 },
-{ id:11, name:"Headphones", image:"box11_image.jpg", price:1200 },
-{ id:12, name:"Smart Watches", image:"box12_image.jpg", price:3000 },
-{ id:13, name:"Gaming Accessories", image:"box13_image.jpg", price:2200 },
-{ id:14, name:"Office Chairs", image:"box14_image.jpg", price:3500 },
-{ id:15, name:"Study Tables", image:"box15_image.jpg", price:2500 },
-{ id:16, name:"Kids Toys", image:"box16_image.jpg", price:800 },
-{ id:17, name:"School Bags", image:"box17_image.jpg", price:600 },
-{ id:18, name:"Shoes", image:"box18_image.jpg", price:1200 },
-{ id:19, name:"Men Fashion", image:"box19_image.jpg", price:900 },
-{ id:20, name:"Women Fashion", image:"box20_image.jpg", price:1100 },
-{ id:21, name:"Jewellery", image:"box21_image.jpg", price:1500 },
-{ id:22, name:"Makeup Kits", image:"box22_image.jpg", price:700 },
-{ id:23, name:"Hair Care", image:"box23_image.jpg", price:350 },
-{ id:24, name:"Skin Care", image:"box24_image.jpg", price:450 },
-{ id:25, name:"Fitness Equipment", image:"box25_image.jpg", price:2000 },
-{ id:26, name:"Yoga Mats", image:"box26_image.jpg", price:600 },
-{ id:27, name:"Sports Wear", image:"box27_image.jpg", price:900 },
-{ id:28, name:"Water Bottles", image:"box28_image.jpg", price:200 },
-{ id:29, name:"Travel Bags", image:"box29_image.jpg", price:1400 },
-{ id:30, name:"Sunglasses", image:"box30_image.jpg", price:500 },
-{ id:31, name:"Watches", image:"box31_image.jpg", price:1800 },
-{ id:32, name:"Bluetooth Speakers", image:"box32_image.jpg", price:1200 },
-{ id:33, name:"Power Banks", image:"box33_image.jpg", price:900 },
-{ id:34, name:"Cameras", image:"box34_image.jpg", price:25000 },
-{ id:35, name:"TV & Entertainment", image:"box35_image.jpg", price:30000 },
-{ id:36, name:"Refrigerators", image:"box36_image.jpg", price:20000 },
-{ id:37, name:"Washing Machines", image:"box37_image.jpg", price:18000 },
-{ id:38, name:"Air Conditioners", image:"box38_image.jpg", price:35000 },
-{ id:39, name:"Kitchen Appliances", image:"box39_image.jpg", price:2500 },
-{ id:40, name:"Microwave Ovens", image:"box40_image.jpg", price:7000 },
-{ id:41, name:"Coffee Makers", image:"box41_image.jpg", price:3200 },
-{ id:42, name:"Dining Sets", image:"box42_image.jpg", price:5000 },
-{ id:43, name:"Bedsheets", image:"box43_image.jpg", price:900 },
-{ id:44, name:"Curtains", image:"box44_image.jpg", price:700 },
-{ id:45, name:"Wall Art", image:"box45_image.jpg", price:600 },
-{ id:46, name:"Lamps & Lighting", image:"box46_image.jpg", price:800 },
-{ id:47, name:"Garden Tools", image:"box47_image.jpg", price:1200 },
-{ id:48, name:"Plant Pots", image:"box48_image.jpg", price:350 },
-{ id:49, name:"Car Accessories", image:"box49_image.jpg", price:1500 },
-{ id:50, name:"Bike Accessories", image:"box50_image.jpg", price:900 },
-{ id:51, name:"Stationery", image:"box51_image.jpg", price:200 },
-{ id:52, name:"Books", image:"box52_image.jpg", price:300 },
-{ id:53, name:"Gift Items", image:"box53_image.jpg", price:500 },
-{ id:54, name:"Festival Decor", image:"box54_image.jpg", price:700 }
+  {id:1,name:"Clothing",category:"Clothing",image:"box1_image.jpg",price:500},
+  {id:2,name:"Health & Personal Care",category:"Health",image:"box2_image.jpg",price:300},
+  {id:3,name:"Furniture",category:"Furniture",image:"box3_image.jpg",price:1500},
+  {id:4,name:"Electronics",category:"Electronics",image:"box4_image.jpg",price:2000},
+  {id:5,name:"Beauty Picks",category:"Beauty",image:"box5_image.jpg",price:400},
+  {id:6,name:"Pet Care",category:"Pet",image:"box6_image.jpg",price:350},
+  {id:7,name:"Home Decor",category:"Home",image:"box7_image.jpg",price:700},
+  {id:8,name:"Kitchen Essentials",category:"Kitchen",image:"box8_image.jpg",price:250}
 ];
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+localStorage.setItem("products", JSON.stringify(productsDB));
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 // ===== RENDER SHOP =====
 const shop = document.getElementById("shop");
@@ -379,28 +307,6 @@ ordersBtn.addEventListener('click', ()=>{
 renderShop(productsDB);
 renderCart();
 </script>
-<script>
-
-// HERO SLIDER
-let heroSlides = document.querySelectorAll(".hero-slide");
-let heroIndex = 0;
-
-function showHeroSlide(){
-  heroSlides.forEach(slide => slide.classList.remove("active"));
-
-  heroIndex++;
-
-  if(heroIndex >= heroSlides.length){
-    heroIndex = 0;
-  }
-
-  heroSlides[heroIndex].classList.add("active");
-}
-
-setInterval(showHeroSlide,3000);
-
-</script>
-
 
 </body>
 </html>
