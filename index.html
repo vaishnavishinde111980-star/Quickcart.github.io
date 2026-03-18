@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amazon Clone with Cart & Login</title>
-
+<title>Amazon Clone - Quickcart</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
@@ -13,12 +12,12 @@
 body{background:#f2f2f2;}
 a{text-decoration:none; color:white;}
 
-/* Navbar */
+/* NAVBAR */
 .navbar{display:flex; align-items:center; gap:10px; padding:8px 12px; background:#0f1111; color:white; position:relative;}
 .nav-border{border:1px solid transparent; padding:5px 8px;}
 .nav-border:hover{border:1px solid white; border-radius:2px;}
-.nav-logo{width:160px; height:50px;}
-.logo{width:100%; height:100%; background:url("amazon_logo.png") no-repeat center/contain;}
+.nav-logo{width:120px; height:90px;background color:white; }
+.logo{width:100%; height:100%; object-fit:contain;}
 .delivery{position:relative;}
 .line1{font-size:12px; color:#ccc;}
 .line2-row{display:flex; gap:5px; align-items:center;}
@@ -28,7 +27,7 @@ a{text-decoration:none; color:white;}
 .search-wrapper:focus-within{border:2px solid #f08804; box-shadow:0 0 0 3px rgba(240,136,4,0.35);}
 .search-bar{display:flex;}
 .search-bar select{padding:9px; border:none; background:#e6e6e6;}
-.search-bar input{width:100%; padding:9px; border:none; outline:none;}
+.search-bar input{flex:1; padding:9px; border:none; outline:none;}
 .search-bar button{padding:9px 14px; border:none; background:#febd69; cursor:pointer;}
 .sign-in,.orders{padding:5px 10px; position:relative;}
 .sign-in span,.orders span{font-size:12px; color:#ccc;}
@@ -36,71 +35,81 @@ a{text-decoration:none; color:white;}
 .cart{display:flex; align-items:center; gap:5px; font-weight:700; padding:6px 10px; cursor:pointer;}
 .cart i{font-size:22px;}
 
-/* Hero Slider */
+/* HERO SLIDER */
 .hero-section{
-width:100%;
-height:400px;
-overflow:hidden;
-position:relative;
+  width:100%; height:450px; overflow:hidden; position:relative; background:white; margin-bottom:20px;
 }
-
 .hero-slide{
-width:100%;
-height:400px;
-object-fit:cover;
-position:absolute;
-opacity:0;
-transition:1s;
+  width:100%; height:100%; object-fit:contain; position:absolute; top:0; left:0; opacity:0; transition:1s ease-in-out; border-radius:4px;
 }
+.hero-slide.active{opacity:1;}
 
-.hero-slide.active{
-opacity:1;
-}
-
-
-/* Shop */
+/* SHOP GRID */
 .shop-section{display:flex; flex-wrap:wrap; justify-content:space-evenly; gap:20px; padding:20px; background:#e3e6e6;}
-.box{width:23%; background:white; padding:15px; border-radius:4px; transition: transform 0.2s; position: relative;}
+.box{width:23%; background:white; padding:15px; border-radius:4px; transition: transform 0.2s; position: relative; box-shadow:0 2px 8px rgba(0,0,0,0.15);}
 .box:hover{transform: scale(1.03);}
-.box img{width:100%; height:200px; object-fit:cover; border-radius:4px;}
+.box img{width:100%; height:200px; object-fit:cover; border-radius:4px; transition:0.3s;}
+.box img:hover{transform:scale(1.05);}
 .box h2{font-size:18px; margin-bottom:10px;}
 .box p, .box button{color:#007185; cursor:pointer;}
 .box button{border:none; background:#febd69; padding:8px 12px; border-radius:4px; font-weight:700;}
 .box button:hover{background:#f08804; color:white;}
 
-/* Cart Panel */
-.cart-panel{position:fixed; top:70px; right:10px; width:300px; max-height:80vh; background:white; border:1px solid #ccc; padding:10px; overflow-y:auto; box-shadow: 0 5px 10px rgba(0,0,0,0.2); border-radius:4px; display:none; z-index:1000;}
+/* CART PANEL */
+.cart-panel{position:fixed; top:70px; right:10px; width:300px; max-height:80vh; background:white; border:1px solid #ccc; padding:10px; overflow-y:auto; box-shadow:0 5px 10px rgba(0,0,0,0.2); border-radius:4px; display:none; z-index:1000;}
 .cart-panel h3{margin-bottom:10px;}
 .cart-item{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
 .cart-item img{width:50px; height:50px; object-fit:cover; border-radius:4px;}
 .cart-item button{background:red; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;}
 .cart-item button:hover{background:#a80000;}
 
-/* Login Modal */
-#login-modal,#orders-modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:2000;}
-.modal-content{background:white; padding:20px; border-radius:6px; width:300px; text-align:center;}
+/* MODALS */
+#login-modal,#orders-modal,.payment-modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:2000;}
+.modal-content,.payment-box{background:white; padding:20px; border-radius:6px; width:300px; text-align:center;}
+.modal-content input{border:1px solid #ccc; border-radius:4px; padding:5px; width:90%; margin:5px 0;}
+.modal-content button,.payment-box button{background:#febd69; border:none; cursor:pointer; border-radius:4px; padding:6px 12px; margin-top:5px;}
+.modal-content button:hover,.payment-box button:hover{background:#f08804; color:white;}
 
-/* Delivery Dropdown */
+/* DELIVERY DROPDOWN */
 #delivery-options{display:none; position:absolute; top:50px; left:0; background:white; color:black; padding:5px; border-radius:4px;}
 .city-option{padding:5px; cursor:pointer;}
 .city-option:hover{background:#f0f0f0;}
 
-/* Media */
+/* FOOTER */
+.footer{background:#232f3e; color:white; margin-top:40px;}
+.footer-top{background:#37475a; text-align:center; padding:15px; cursor:pointer; font-weight:bold;}
+.footer-top:hover{background:#485769;}
+.footer-links{display:flex; justify-content:space-evenly; padding:30px; flex-wrap:wrap;}
+.footer-column{display:flex; flex-direction:column; gap:8px;}
+.footer-column h4{margin-bottom:10px;}
+.footer-column a{color:#ddd; font-size:14px;}
+.footer-column a:hover{text-decoration:underline;}
+.footer-bottom{text-align:center; padding:15px; background:#131a22; font-size:14px;}
+
+/* BACK TO TOP BUTTON */
+#backToTop{position:fixed; bottom:30px; right:20px; padding:10px 15px; background:#febd69; border:none; border-radius:5px; cursor:pointer; display:none; font-weight:bold; z-index:999;}
+#backToTop:hover{background:#f08804; color:white;}
+
+/* DARK MODE */
+.dark-mode{background:#111; color:white;}
+
+/* MOBILE */
 @media(max-width:768px){
   .navbar{flex-direction:column; text-align:center;}
   .shop-section{flex-direction:column; align-items:center;}
   .box{width:90%;}
+  .hero-section{height:250px;}
+  .hero-slide{object-fit:cover;}
+  .cart-panel{width:90%; right:5%;}
+  .footer-links{flex-direction:column; gap:20px; text-align:center;}
 }
 </style>
 </head>
-
 <body>
 
 <!-- NAVBAR -->
 <div class="navbar">
-  <a class="nav-logo nav-border"><div class="logo"></div></a>
-
-  <!-- Delivery Dropdown -->
+  <a class="nav-logo nav-border"><img src="quickcart_logo.png" class="logo"></a>
   <div class="delivery nav-border" id="delivery-tab">
     <div class="line1">Deliver to</div>
     <div class="line2-row">
@@ -120,43 +129,56 @@ opacity:1;
   <div class="search-wrapper">
     <div class="search-bar">
       <select id="filter-category"><option value="all">All</option></select>
-      <input type="text" id="search-bar" placeholder="Search Amazon">
+      <input type="text" id="search-bar" placeholder="Search products">
       <button id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
   </div>
 
-  <!-- Sign In / Account -->
   <a class="sign-in nav-border" id="sign-in-btn">
     <span id="hello-text">Hello, Sign in</span>
     <div class="account" id="account-name">Account & Lists</div>
   </a>
 
-  <!-- Sign In Modal -->
-  <div id="login-modal">
-    <div class="modal-content">
-      <h3>Sign In</h3>
-      <input type="text" id="username" placeholder="Username" style="width:90%; padding:5px; margin:5px 0;"><br>
-      <input type="password" id="password" placeholder="Password" style="width:90%; padding:5px; margin:5px 0;"><br>
-      <button id="login-submit" style="padding:6px 12px; margin-top:5px;">Login</button>
-    </div>
-  </div>
-
-  <!-- Returns & Orders -->
   <a class="orders nav-border" id="orders-btn">
     <span>Returns</span>
     <div class="and-orders">& Orders</div>
   </a>
 
-  <!-- Orders Modal -->
-  <div id="orders-modal">
-    <div class="modal-content">
-      <h3>Your Orders</h3>
-      <div id="order-list">No orders yet.</div>
-      <button onclick="document.getElementById('orders-modal').style.display='none'" style="padding:6px 12px; margin-top:5px;">Close</button>
-    </div>
-  </div>
-
   <a class="cart nav-border" id="cart-btn"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
+</div>
+
+<!-- MODALS -->
+<div id="login-modal" class="modal">
+  <div class="modal-content">
+    <h3>Sign In</h3>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button id="login-submit">Login</button>
+  </div>
+</div>
+
+<div id="orders-modal" class="modal">
+  <div class="modal-content">
+    <h3>Your Orders</h3>
+    <div id="order-list">No orders yet.</div>
+    <button onclick="document.getElementById('orders-modal').style.display='none'">Close</button>
+  </div>
+</div>
+
+<div class="payment-modal" id="paymentUI">
+  <div class="payment-box">
+    <h3>Payment</h3>
+    <select id="paymentMethod">
+      <option>UPI</option>
+      <option>Credit Card</option>
+      <option>Debit Card</option>
+      <option>Cash on Delivery</option>
+    </select>
+    <br><br>
+    <button onclick="payNow()">Pay Now</button>
+    <br><br>
+    <button onclick="closePayment()">Cancel</button>
+  </div>
 </div>
 
 <!-- HERO SLIDER -->
@@ -164,15 +186,12 @@ opacity:1;
   <img src="hero1_image.jpg" class="hero-slide active">
   <img src="hero2_image.jpg" class="hero-slide">
   <img src="hero3_image.jpg" class="hero-slide">
-  <img src="hero4_image.jpg" class="hero-slide">
-  <img src="hero5_image.jpg" class="hero-slide">
-  <img src="hero6_image.jpg" class="hero-slide">
 </div>
 
-<!-- Shop Section -->
+<!-- SHOP -->
 <div class="shop-section" id="shop"></div>
 
-<!-- Cart Panel -->
+<!-- CART PANEL -->
 <div class="cart-panel" id="cart-panel">
   <h3>Your Cart</h3>
   <div id="cart-items"></div>
@@ -181,100 +200,89 @@ opacity:1;
   <button onclick="checkout()">Checkout</button>
 </div>
 
-<script>
-// ===== PRODUCTS DATABASE =====
-// PRODUCTS
-let productsDB = [
-{ id:1, name:"Clothing", image:"box1_image.jpg", price:500 },
-{ id:2, name:"Health & Personal Care", image:"box2_image.jpg", price:300 },
-{ id:3, name:"Furniture", image:"box3_image.jpg", price:1500 },
-{ id:4, name:"Electronics", image:"box4_image.jpg", price:2000 },
-{ id:5, name:"Beauty Picks", image:"box5_image.jpg", price:400 },
-{ id:6, name:"Pet Care", image:"box6_image.jpg", price:350 },
-{ id:7, name:"Home Decor", image:"box7_image.jpg", price:700 },
-{ id:8, name:"Kitchen Essentials", image:"box8_image.jpg", price:250 },
-{ id:9, name:"Mobile Phones", image:"box9_image.jpg", price:12000 },
-{ id:10, name:"Laptop Deals", image:"box10_image.jpg", price:45000 },
-{ id:11, name:"Headphones", image:"box11_image.jpg", price:1200 },
-{ id:12, name:"Smart Watches", image:"box12_image.jpg", price:3000 },
-{ id:13, name:"Gaming Accessories", image:"box13_image.jpg", price:2200 },
-{ id:14, name:"Office Chairs", image:"box14_image.jpg", price:3500 },
-{ id:15, name:"Study Tables", image:"box15_image.jpg", price:2500 },
-{ id:16, name:"Kids Toys", image:"box16_image.jpg", price:800 },
-{ id:17, name:"School Bags", image:"box17_image.jpg", price:600 },
-{ id:18, name:"Shoes", image:"box18_image.jpg", price:1200 },
-{ id:19, name:"Men Fashion", image:"box19_image.jpg", price:900 },
-{ id:20, name:"Women Fashion", image:"box20_image.jpg", price:1100 },
-{ id:21, name:"Jewellery", image:"box21_image.jpg", price:1500 },
-{ id:22, name:"Makeup Kits", image:"box22_image.jpg", price:700 },
-{ id:23, name:"Hair Care", image:"box23_image.jpg", price:350 },
-{ id:24, name:"Skin Care", image:"box24_image.jpg", price:450 },
-{ id:25, name:"Fitness Equipment", image:"box25_image.jpg", price:2000 },
-{ id:26, name:"Yoga Mats", image:"box26_image.jpg", price:600 },
-{ id:27, name:"Sports Wear", image:"box27_image.jpg", price:900 },
-{ id:28, name:"Water Bottles", image:"box28_image.jpg", price:200 },
-{ id:29, name:"Travel Bags", image:"box29_image.jpg", price:1400 },
-{ id:30, name:"Sunglasses", image:"box30_image.jpg", price:500 },
-{ id:31, name:"Watches", image:"box31_image.jpg", price:1800 },
-{ id:32, name:"Bluetooth Speakers", image:"box32_image.jpg", price:1200 },
-{ id:33, name:"Power Banks", image:"box33_image.jpg", price:900 },
-{ id:34, name:"Cameras", image:"box34_image.jpg", price:25000 },
-{ id:35, name:"TV & Entertainment", image:"box35_image.jpg", price:30000 },
-{ id:36, name:"Refrigerators", image:"box36_image.jpg", price:20000 },
-{ id:37, name:"Washing Machines", image:"box37_image.jpg", price:18000 },
-{ id:38, name:"Air Conditioners", image:"box38_image.jpg", price:35000 },
-{ id:39, name:"Kitchen Appliances", image:"box39_image.jpg", price:2500 },
-{ id:40, name:"Microwave Ovens", image:"box40_image.jpg", price:7000 },
-{ id:41, name:"Coffee Makers", image:"box41_image.jpg", price:3200 },
-{ id:42, name:"Dining Sets", image:"box42_image.jpg", price:5000 },
-{ id:43, name:"Bedsheets", image:"box43_image.jpg", price:900 },
-{ id:44, name:"Curtains", image:"box44_image.jpg", price:700 },
-{ id:45, name:"Wall Art", image:"box45_image.jpg", price:600 },
-{ id:46, name:"Lamps & Lighting", image:"box46_image.jpg", price:800 },
-{ id:47, name:"Garden Tools", image:"box47_image.jpg", price:1200 },
-{ id:48, name:"Plant Pots", image:"box48_image.jpg", price:350 },
-{ id:49, name:"Car Accessories", image:"box49_image.jpg", price:1500 },
-{ id:50, name:"Bike Accessories", image:"box50_image.jpg", price:900 },
-{ id:51, name:"Stationery", image:"box51_image.jpg", price:200 },
-{ id:52, name:"Books", image:"box52_image.jpg", price:300 },
-{ id:53, name:"Gift Items", image:"box53_image.jpg", price:500 },
-{ id:54, name:"Festival Decor", image:"box54_image.jpg", price:700 }
-];
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+<!-- BACK TO TOP -->
+<button id="backToTop">Back to Top</button>
 
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top" onclick="scrollToTop()">Back to top</div>
+  <div class="footer-links">
+    <div class="footer-column">
+      <h4>Get to Know Us</h4>
+      <a href="#">About Us</a>
+      <a href="#">Careers</a>
+      <a href="#">Press Releases</a>
+      <a href="#">Amazon Science</a>
+    </div>
+    <div class="footer-column">
+      <h4>Connect with Us</h4>
+      <a href="#">Facebook</a>
+      <a href="#">Twitter</a>
+      <a href="#">Instagram</a>
+    </div>
+    <div class="footer-column">
+      <h4>Make Money with Us</h4>
+      <a href="#">Sell on Amazon</a>
+      <a href="#">Affiliate Program</a>
+      <a href="#">Advertise Your Products</a>
+      <a href="#">Amazon Pay</a>
+    </div>
+    <div class="footer-column">
+      <h4>Let Us Help You</h4>
+      <a href="#">Your Account</a>
+      <a href="#">Returns Centre</a>
+      <a href="#">Help</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Vaishnavi Shinde Quickcart</p>
+  </div>
+</footer>
+
+<script>
+// ===== PRODUCTS =====
+let productsDB = [];
+for(let i=1;i<=54;i++){
+  productsDB.push({id:i,name:`Product ${i}`,image:`box${i}_image.jpg`,price:(i*100)});
+}
+
+let cart = JSON.parse(localStorage.getItem("cart"))||[];
 
 // ===== RENDER SHOP =====
-const shop = document.getElementById("shop");
+const shop=document.getElementById("shop");
 function renderShop(products){
-  shop.innerHTML='';
+  shop.innerHTML="";
   products.forEach(p=>{
-    const box = document.createElement("div");
-    box.className='box';
-    box.innerHTML=`<h2>${p.name}</h2><img src="${p.image}"><p>Price: ₹${p.price}</p><button onclick="addToCart(${p.id})">Add to Cart</button>`;
+    const box=document.createElement("div");
+    box.className="box";
+    box.innerHTML=`<h2>${p.name}</h2><img src="${p.image}"><p>₹${p.price}</p>
+    <button onclick="addToCart(${p.id})">Add to Cart</button>`;
     shop.appendChild(box);
   });
 }
 
 // ===== CART =====
-const cartPanel = document.getElementById("cart-panel");
-const cartItemsDiv = document.getElementById("cart-items");
-const cartTotal = document.getElementById("cart-total");
+const cartPanel=document.getElementById("cart-panel");
+const cartItemsDiv=document.getElementById("cart-items");
+const cartTotal=document.getElementById("cart-total");
 
 function renderCart(){
-  cartItemsDiv.innerHTML='';
+  cartItemsDiv.innerHTML="";
   let total=0;
   cart.forEach((item,index)=>{
     total+=item.price;
-    const div=document.createElement('div');
-    div.className='cart-item';
-    div.innerHTML=`<img src="${item.image}"><span>${item.name} - ₹${item.price}</span><button onclick="removeFromCart(${index})">X</button>`;
+    const div=document.createElement("div");
+    div.className="cart-item";
+    div.innerHTML=`<img src="${item.image}"><span>${item.name} - ₹${item.price}</span>
+    <button onclick="removeFromCart(${index})">X</button>`;
     cartItemsDiv.appendChild(div);
   });
   cartTotal.textContent=total;
 }
 
 function addToCart(id){
-  const product = productsDB.find(p=>p.id===id);
+  const product=productsDB.find(p=>p.id===id);
+  product.qty=1;
   cart.push(product);
   localStorage.setItem("cart",JSON.stringify(cart));
   renderCart();
@@ -286,768 +294,99 @@ function removeFromCart(index){
   renderCart();
 }
 
-// Cart toggle
-document.getElementById("cart-btn").addEventListener('click', ()=>{
+document.getElementById("cart-btn").addEventListener('click',()=>{
   cartPanel.style.display = cartPanel.style.display==='block'?'none':'block';
 });
 
-// ===== SEARCH FUNCTIONALITY =====
-const searchBar = document.getElementById("search-bar");
-const searchBtn = document.getElementById("search-btn");
-
+// ===== SEARCH =====
+const searchBar=document.getElementById("search-bar");
+const searchBtn=document.getElementById("search-btn");
 function performSearch(){
-  const searchText = searchBar.value.toLowerCase().trim();
-  if(searchText === "") {
-    renderShop(productsDB);
-    return;
-  }
-  const filteredProducts = productsDB.filter(p => p.name.toLowerCase().includes(searchText));
-  renderShop(filteredProducts);
+  let text=searchBar.value.toLowerCase().trim();
+  if(text===""){renderShop(productsDB); return;}
+  renderShop(productsDB.filter(p=>p.name.toLowerCase().includes(text)));
 }
-
-// Search button click
-searchBtn.addEventListener('click', performSearch);
-
-// Enter key press
-searchBar.addEventListener('keypress', function(e){
-  if(e.key === 'Enter'){
-    performSearch();
-  }
-});
+searchBtn.addEventListener('click',performSearch);
+searchBar.addEventListener('keypress',e=>{if(e.key==='Enter') performSearch();});
 
 // ===== CHECKOUT =====
 function checkout(){
-  alert("Thank you for your purchase!");
-  localStorage.setItem("cart","[]");
+  document.getElementById("paymentUI").style.display="flex";
+}
+function closePayment(){document.getElementById("paymentUI").style.display="none";}
+function payNow(){
+  let method=document.getElementById("paymentMethod").value;
+  alert("Payment success via "+method);
+  saveOrder();
   cart=[];
+  localStorage.setItem("cart","[]");
   renderCart();
+  closePayment();
+  downloadInvoice();
+}
+function saveOrder(){
+  let orders=JSON.parse(localStorage.getItem("orders"))||[];
+  orders.push({date:new Date().toLocaleString(),items:cart});
+  localStorage.setItem("orders",JSON.stringify(orders));
+}
+function downloadInvoice(){
+  let data="Amazon Clone Invoice\n";
+  cart.forEach(i=>{data+=i.name+" ₹"+i.price+"\n";});
+  let blob=new Blob([data]);
+  let a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="invoice.txt";
+  a.click();
 }
 
 // ===== DELIVERY =====
-const deliveryTab = document.getElementById('delivery-tab');
-const deliveryOptions = document.getElementById('delivery-options');
-const deliveryCity = document.getElementById('delivery-city');
-deliveryTab.addEventListener('click', ()=>{
-  deliveryOptions.style.display = deliveryOptions.style.display==='none'?'block':'none';
-});
-document.querySelectorAll('.city-option').forEach(opt=>{
-  opt.addEventListener('click', ()=>{
-    deliveryCity.textContent=opt.textContent; 
-    deliveryOptions.style.display='none';
-  });
-});
+const deliveryTab=document.getElementById("delivery-tab");
+const deliveryOptions=document.getElementById("delivery-options");
+const deliveryCity=document.getElementById("delivery-city");
+deliveryTab.addEventListener('click',()=>{deliveryOptions.style.display=deliveryOptions.style.display==='none'?'block':'none';});
+document.querySelectorAll(".city-option").forEach(opt=>opt.addEventListener('click',()=>{deliveryCity.textContent=opt.textContent; deliveryOptions.style.display='none';}));
 
 // ===== LOGIN =====
-const signInBtn = document.getElementById('sign-in-btn');
-const loginModal = document.getElementById('login-modal');
-const loginSubmit = document.getElementById('login-submit');
-const helloText = document.getElementById('hello-text');
-const accountName = document.getElementById('account-name');
-
-signInBtn.addEventListener('click', ()=>{loginModal.style.display='flex';});
-loginSubmit.addEventListener('click', ()=>{
-  const username=document.getElementById('username').value;
-  if(username){
-    helloText.textContent=`Hello, ${username}`;
-    accountName.textContent=`Account & Lists`;
-    loginModal.style.display='none';
-    localStorage.setItem("user",username);
-    alert(`Login Successful! Welcome ${username}`);
-  }
+const signInBtn=document.getElementById("sign-in-btn");
+const loginModal=document.getElementById("login-modal");
+const loginSubmit=document.getElementById("login-submit");
+const helloText=document.getElementById("hello-text");
+const accountName=document.getElementById("account-name");
+signInBtn.addEventListener('click',()=>loginModal.style.display="flex");
+loginSubmit.addEventListener('click',()=>{
+  const username=document.getElementById("username").value;
+  if(username){helloText.textContent=`Hello, ${username}`; accountName.textContent="Account & Lists"; localStorage.setItem("user",username); loginModal.style.display="none"; alert("Login Successful!");}
 });
-
-const savedUser = localStorage.getItem("user");
+let savedUser=localStorage.getItem("user");
 if(savedUser){helloText.textContent=`Hello, ${savedUser}`; accountName.textContent="Account & Lists";}
 
 // ===== ORDERS =====
-const ordersBtn = document.getElementById('orders-btn');
-const ordersModal = document.getElementById('orders-modal');
-const orderList = document.getElementById('order-list');
-
-ordersBtn.addEventListener('click', ()=>{
-  ordersModal.style.display='flex';
-  const savedOrders = JSON.parse(localStorage.getItem("cart")) || [];
-  orderList.innerHTML = savedOrders.length===0?"No orders yet.":'';
-  savedOrders.forEach(item=>{
-    const div=document.createElement('div');
-    div.textContent=`${item.name} - ₹${item.price}`;
-    orderList.appendChild(div);
-  });
+const ordersBtn=document.getElementById("orders-btn");
+const ordersModal=document.getElementById("orders-modal");
+const orderList=document.getElementById("order-list");
+ordersBtn.addEventListener('click',()=>{
+  ordersModal.style.display="flex";
+  const savedOrders=JSON.parse(localStorage.getItem("orders"))||[];
+  orderList.innerHTML=savedOrders.length===0?"No orders yet.":'';
+  savedOrders.forEach(o=>{o.items.forEach(i=>{const div=document.createElement("div"); div.textContent=`${i.name} - ₹${i.price}`; orderList.appendChild(div);});});
 });
 
-// Initial render
+// ===== HERO SLIDER =====
+let heroIndex=0;
+const heroSlides=document.querySelectorAll(".hero-slide");
+function nextHero(){heroSlides.forEach(s=>s.classList.remove("active")); heroIndex=(heroIndex+1)%heroSlides.length; heroSlides[heroIndex].classList.add("active");}
+setInterval(nextHero,3000);
+
+// ===== BACK TO TOP =====
+const backBtn=document.getElementById("backToTop");
+window.onscroll=function(){backBtn.style.display=window.scrollY>300?"block":"none";};
+backBtn.addEventListener('click',scrollToTop);
+function scrollToTop(){window.scrollTo({top:0, behavior:'smooth'});}
+
+// ===== INITIALIZE =====
 renderShop(productsDB);
 renderCart();
 </script>
-<script>
 
-// HERO SLIDER
-let heroSlides = document.querySelectorAll(".hero-slide");
-let heroIndex = 0;
-
-function showHeroSlide(){
-  heroSlides.forEach(slide => slide.classList.remove("active"));
-
-  heroIndex++;
-
-  if(heroIndex >= heroSlides.length){
-    heroIndex = 0;
-  }
-
-  heroSlides[heroIndex].classList.add("active");
-}
-
-setInterval(showHeroSlide,3000);
-
-</script>
-<!-- BACK TO TOP BUTTON -->
-
-<button id="backToTop">Back to Top</button>
-
-<!-- FOOTER -->
-
-<footer class="footer">
-
-<div class="footer-top" onclick="scrollToTop()">
-Back to top
-</div>
-
-<div class="footer-links">
-
-<div class="footer-column">
-<h4>Get to Know Us</h4>
-<a href="https://www.aboutamazon.in/" target="_blank">About Amazon</a>
-<a href="https://www.amazon.jobs" target="_blank">Careers</a>
-<a href="https://press.aboutamazon.com/" target="_blank">Press Releases</a>
-<a href="https://www.amazon.science/" target="_blank">Amazon Science</a>
-</div>
-
-<div class="footer-column">
-<h4>Connect with Us</h4>
-<a href="https://www.facebook.com/AmazonIN" target="_blank">Facebook</a>
-<a href="https://twitter.com/AmazonIN" target="_blank">Twitter</a>
-<a href="https://www.instagram.com/amazonin/" target="_blank">Instagram</a>
-</div>
-
-<div class="footer-column">
-<h4>Make Money with Us</h4>
-<a href="https://sell.amazon.in/" target="_blank">Sell on Amazon</a>
-<a href="https://sell.amazon.in/grow-your-business/amazon-accelerator" target="_blank">Sell under Amazon Accelerator</a>
-<a href="https://brandservices.amazon.in/" target="_blank">Protect and Build Your Brand</a>
-<a href="https://sell.amazon.in/global-selling" target="_blank">Amazon Global Selling</a>
-</div>
-
-<div class="footer-column">
-<h4>Let Us Help You</h4>
-<a href="https://www.amazon.in/ap/signin" target="_blank">Your Account</a>
-<a href="https://www.amazon.in/gp/css/returns/homepage.html" target="_blank">Returns Centre</a>
-<a href="https://www.amazon.in/gp/help/customer/display.html" target="_blank">Help</a>
-</div>
-
-</div>
-
-<div class="footer-bottom">
-<p>© 2026 Amazon Clone | Made for Project</p>
-</div>
-
-</footer>
-
-<style>
-
-/* BACK TO TOP BUTTON */
-#backToTop{
-position:fixed;
-bottom:30px;
-right:20px;
-padding:10px 15px;
-background:#febd69;
-border:none;
-border-radius:5px;
-cursor:pointer;
-display:none;
-font-weight:bold;
-z-index:999;
-}
-
-#backToTop:hover{
-background:#f08804;
-color:white;
-}
-
-/* FOOTER */
-.footer{
-background:#232f3e;
-color:white;
-margin-top:40px;
-}
-
-.footer-top{
-background:#37475a;
-text-align:center;
-padding:15px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.footer-top:hover{
-background:#485769;
-}
-
-.footer-links{
-display:flex;
-justify-content:space-evenly;
-padding:30px;
-flex-wrap:wrap;
-}
-
-.footer-column{
-display:flex;
-flex-direction:column;
-gap:8px;
-}
-
-.footer-column h4{
-margin-bottom:10px;
-}
-
-.footer-column a{
-color:#ddd;
-font-size:14px;
-}
-
-.footer-column a:hover{
-text-decoration:underline;
-}
-
-.footer-bottom{
-text-align:center;
-padding:15px;
-background:#131a22;
-font-size:14px;
-}
-
-</style>
-
-<script>
-
-function scrollToTop(){
-window.scrollTo({
-top:0,
-behavior:'smooth'
-});
-}
-
-let backBtn = document.getElementById("backToTop");
-
-window.onscroll = function(){
-if(document.body.scrollTop > 300 || document.documentElement.scrollTop > 300){
-backBtn.style.display="block";
-}else{
-backBtn.style.display="none";
-}
-};
-
-backBtn.onclick = scrollToTop;
-
-</script>
-<!-- AMAZON ADVANCED FEATURE PACK -->
-
-<style>
-
-.dark-mode{
-background:#111;
-color:white;
-}
-
-.mobile-bar{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-background:#232f3e;
-color:white;
-display:none;
-justify-content:space-around;
-padding:10px;
-z-index:5000;
-}
-
-.mobile-bar div{
-text-align:center;
-cursor:pointer;
-}
-
-.star{
-color:gold;
-cursor:pointer;
-font-size:18px;
-}
-
-.payment-modal{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.6);
-justify-content:center;
-align-items:center;
-z-index:6000;
-}
-
-.payment-box{
-background:white;
-padding:20px;
-width:300px;
-text-align:center;
-border-radius:6px;
-}
-
-.admin-panel{
-position:fixed;
-right:10px;
-bottom:80px;
-background:white;
-padding:10px;
-border:1px solid #ccc;
-}
-
-@media(max-width:700px){
-.mobile-bar{
-display:flex;
-}
-}
-
-</style>
-
-
-<div class="mobile-bar">
-
-<div onclick="window.scrollTo(0,0)">🏠</div>
-<div onclick="document.getElementById('cart-btn').click()">🛒</div>
-<div onclick="showOrders()">📦</div>
-<div onclick="toggleDark()">🌙</div>
-
-</div>
-
-
-<div class="payment-modal" id="paymentUI">
-
-<div class="payment-box">
-
-<h3>Payment</h3>
-
-<select id="paymentMethod">
-<option>UPI</option>
-<option>Credit Card</option>
-<option>Debit Card</option>
-<option>Cash on Delivery</option>
-</select>
-
-<br><br>
-
-<button onclick="payNow()">Pay Now</button>
-
-<br><br>
-
-<button onclick="closePayment()">Cancel</button>
-
-</div>
-
-</div>
-
-<script>
-
-/* DARK MODE */
-
-function toggleDark(){
-document.body.classList.toggle("dark-mode");
-}
-
-
-/* LOGIN SYSTEM */
-
-function login(username,password){
-
-let users=JSON.parse(localStorage.getItem("users"))||[];
-
-let found=users.find(u=>u.username===username && u.password===password);
-
-if(found){
-
-localStorage.setItem("user",username);
-
-alert("Login success");
-
-}else{
-
-alert("Invalid login");
-
-}
-
-}
-
-
-/* WISHLIST */
-
-function addWishlist(product){
-
-let list=JSON.parse(localStorage.getItem("wishlist"))||[];
-
-list.push(product);
-
-localStorage.setItem("wishlist",JSON.stringify(list));
-
-alert("Added to wishlist");
-
-}
-
-
-/* STAR RATING */
-
-function rateProduct(name,stars){
-
-alert(name+" rated "+stars+" stars");
-
-}
-
-
-/* REVIEW SYSTEM */
-
-function reviewProduct(name){
-
-let text=prompt("Write review");
-
-if(text){
-
-alert("Review saved for "+name);
-
-}
-
-}
-
-
-/* CART QUANTITY */
-
-function changeQty(i,val){
-
-cart[i].qty+=val;
-
-if(cart[i].qty<=0){
-
-cart.splice(i,1);
-
-}
-
-localStorage.setItem("cart",JSON.stringify(cart));
-
-renderCart();
-
-}
-
-
-/* PAYMENT */
-
-function checkout(){
-
-document.getElementById("paymentUI").style.display="flex";
-
-}
-
-function closePayment(){
-
-document.getElementById("paymentUI").style.display="none";
-
-}
-
-function payNow(){
-
-let m=document.getElementById("paymentMethod").value;
-
-alert("Payment success via "+m);
-
-saveOrder();
-
-cart=[];
-
-localStorage.setItem("cart","[]");
-
-renderCart();
-
-closePayment();
-
-downloadInvoice();
-
-}
-
-
-/* ORDER HISTORY */
-
-function saveOrder(){
-
-let orders=JSON.parse(localStorage.getItem("orders"))||[];
-
-orders.push({
-
-date:new Date().toLocaleString(),
-
-items:cart
-
-});
-
-localStorage.setItem("orders",JSON.stringify(orders));
-
-}
-
-
-function showOrders(){
-
-let orders=JSON.parse(localStorage.getItem("orders"))||[];
-
-let text="";
-
-orders.forEach(o=>{
-
-text+="Order: "+o.date+"\n";
-
-o.items.forEach(i=>{
-
-text+=i.name+" x"+i.qty+"\n";
-
-});
-
-text+="\n";
-
-});
-
-alert(text||"No orders");
-
-}
-
-
-/* INVOICE DOWNLOAD */
-
-function downloadInvoice(){
-
-let data="Amazon Clone Invoice\n";
-
-cart.forEach(i=>{
-
-data+=i.name+" "+i.price+"\n";
-
-});
-
-let blob=new Blob([data]);
-
-let a=document.createElement("a");
-
-a.href=URL.createObjectURL(blob);
-
-a.download="invoice.txt";
-
-a.click();
-
-}
-
-
-/* PRODUCT FILTER */
-
-function filterProducts(text){
-
-let f=productsDB.filter(p=>p.name.toLowerCase().includes(text));
-
-renderShop(f);
-
-}
-
-
-    ias code me add kar ke ek hi code                 do<!-- BACK TO TOP --> 
-<div class="footer-top" onclick="scrollToTop()">Back to top</div>
-
-<footer class="footer">
-
-  <!-- TOP LINKS -->
-  <div class="footer-links">
-
-    <div class="footer-column">
-      <h4>Get to Know Us</h4>
-      <a href="https://www.aboutamazon.in/" target="_blank">About Us</a>
-      <a href="https://www.amazon.jobs" target="_blank">Careers</a>
-      <a href="https://press.aboutamazon.com/" target="_blank">Press Releases</a>
-      <a href="https://www.amazon.science/" target="_blank">Amazon Science</a>
-    </div>
-
-    <div class="footer-column">
-      <h4>Connect with Us</h4>
-      <a href="https://www.facebook.com/AmazonIN" target="_blank">Facebook</a>
-      <a href="https://twitter.com/AmazonIN" target="_blank">Twitter</a>
-      <a href="https://www.instagram.com/amazonin/" target="_blank">Instagram</a>
-    </div>
-
-    <div class="footer-column">
-      <h4>Make Money with Us</h4>
-      <a href="https://sell.amazon.in/" target="_blank">Sell on Amazon</a>
-      <a href="https://affiliate-program.amazon.in/" target="_blank">Affiliate Program</a>
-      <a href="https://advertising.amazon.in/" target="_blank">Advertise Your Products</a>
-      <a href="https://pay.amazon.in/" target="_blank">Amazon Pay</a>
-    </div>
-
-    <div class="footer-column">
-      <h4>Let Us Help You</h4>
-      <a href="#">Your Account</a>
-      <a href="https://www.amazon.in/gp/css/returns/homepage.html" target="_blank">Returns Centre</a>
-      <a href="#">100% Purchase Protection</a>
-      <a href="https://www.amazon.in/gp/help/customer/display.html" target="_blank">Help</a>
-    </div>
-
-  </div>
-
-  <!-- MIDDLE (LOGO + LANGUAGE) -->
-  <div class="footer-middle">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" class="footer-logo">
-
-    <div class="footer-options">
-      <select>
-        <option>🌐 English</option>
-        <option>हिंदी</option>
-        <option>मराठी</option>
-      </select>
-
-      <select>
-        <option>🇮🇳 India</option>
-        <option>🇺🇸 United States</option>
-        <option>🇬🇧 United Kingdom</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- AMAZON SERVICES -->
-  <div class="footer-bottom-links">
-
-    <div>
-      <p><b>AbeBooks</b></p>
-      <small>Books, art & collectibles</small>
-    </div>
-
-    <div>
-      <p><b>Amazon Web Services</b></p>
-      <small>Cloud Computing Services</small>
-    </div>
-
-    <div>
-      <p><b>Audible</b></p>
-      <small>Download Audio Books</small>
-    </div>
-
-    <div>
-      <p><b>IMDb</b></p>
-      <small>Movies, TV & Celebrities</small>
-    </div>
-
-  </div>
-
-  <!-- COPYRIGHT -->
-  <div class="footer-copy">
-    <p>Conditions of Use & Sale | Privacy Notice | Interest-Based Ads</p>
-    <p>© 2026 Amazon Clone</p>
-  </div>
-
-</footer>
-
-<style>
-
-/* FOOTER MAIN */
-.footer{
-  background:#232f3e;
-  color:white;
-}
-
-/* BACK TO TOP */
-.footer-top{
-  background:#37475a;
-  text-align:center;
-  padding:15px;
-  cursor:pointer;
-  font-weight:bold;
-}
-.footer-top:hover{
-  background:#485769;
-}
-
-/* TOP LINKS */
-.footer-links{
-  display:flex;
-  justify-content:space-evenly;
-  padding:40px 20px;
-  flex-wrap:wrap;
-}
-.footer-column{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.footer-column h4{
-  margin-bottom:10px;
-}
-.footer-column a{
-  color:#ddd;
-  font-size:14px;
-}
-.footer-column a:hover{
-  text-decoration:underline;
-}
-
-/* MIDDLE */
-.footer-middle{
-  border-top:1px solid #3a4553;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:30px;
-  padding:20px;
-  flex-wrap:wrap;
-}
-.footer-logo{
-  width:100px;
-  height:auto;
-}
-.footer-options select{
-  padding:6px;
-  background:#232f3e;
-  color:white;
-  border:1px solid #848688;
-  margin:5px;
-}
-
-/* SERVICES */
-.footer-bottom-links{
-  background:#131a22;
-  display:flex;
-  justify-content:space-evenly;
-  flex-wrap:wrap;
-  padding:25px;
-  font-size:12px;
-}
-.footer-bottom-links div{
-  width:160px;
-  margin:10px;
-  color:#ddd;
-}
-
-/* COPYRIGHT */
-.footer-copy{
-  background:#131a22;
-  text-align:center;
-  padding:15px;
-  font-size:12px;
-  color:#ccc;
-}
-
-</style>
-
-<script>
-function scrollToTop(){
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-</script>
+</body>
+</html>
