@@ -110,22 +110,112 @@ a{text-decoration:none; color:white;}
   <a class="nav-logo nav-border">
     <img src="quickcart_logo.png" class="quick-logo">
   </a>
-  <!-- Delivery Dropdown -->
   <div class="delivery nav-border" id="delivery-tab">
-    <div class="line1">Deliver to</div>
-    <div class="line2-row">
-      <i class="fa-solid fa-location-dot"></i>
-      <div class="line2" id="delivery-city">India</div>
-      <i class="fa-solid fa-caret-down"></i>
-    </div>
-    <div id="delivery-options">
-      <div class="city-option">Pachora</div>
-      <div class="city-option">Jalgaon</div>
-      <div class="city-option">Jamner</div>
-      <div class="city-option">Nashik</div>
-      <div class="city-option">Mumbai</div>
-    </div>
+  <div class="line1">Deliver to</div>
+  <div class="line2-row">
+    <i class="fa-solid fa-location-dot"></i>
+    <div class="line2" id="delivery-city">India</div>
+    <i class="fa-solid fa-caret-down"></i>
   </div>
+
+  <div id="delivery-options">
+    <input type="text" id="pin-code" placeholder="Enter your code" maxlength="6">
+    <button id="save-code">Apply</button>
+  </div>
+</div>
+
+<style>
+#delivery-options{
+  display:none;
+  position:absolute;
+  top:50px;
+  left:0;
+  background:white;
+  color:black;
+  padding:10px;
+  border-radius:4px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
+  z-index:1000;
+}
+
+#delivery-options input{
+  padding:6px;
+  width:140px;
+  margin-bottom:5px;
+  border:1px solid #ccc;
+  border-radius:4px;
+}
+
+#delivery-options button{
+  padding:6px 10px;
+  background:#febd69;
+  border:none;
+  cursor:pointer;
+  border-radius:4px;
+}
+
+#delivery-options button:hover{
+  background:#f08804;
+  color:white;
+}
+</style>
+
+<script>
+const deliveryTab = document.getElementById('delivery-tab');
+const deliveryOptions = document.getElementById('delivery-options');
+const deliveryCity = document.getElementById('delivery-city');
+const saveCode = document.getElementById('save-code');
+const pinCode = document.getElementById('pin-code');
+
+/* Delivery tab open */
+deliveryTab.addEventListener('click', function(e){
+  e.stopPropagation();
+  deliveryOptions.style.display =
+    deliveryOptions.style.display === 'block' ? 'none' : 'block';
+});
+
+/* Input pe click karne par band na ho */
+deliveryOptions.addEventListener('click', function(e){
+  e.stopPropagation();
+});
+
+/* Apply button */
+saveCode.addEventListener('click', function(){
+
+  let code = pinCode.value.trim();
+
+  if(code.length === 6 && !isNaN(code)){
+
+    let city = code;
+
+    if(code.startsWith("422")) city = "Nashik";
+    else if(code.startsWith("400")) city = "Mumbai";
+    else if(code.startsWith("425")) city = "Jalgaon";
+    else if(code.startsWith("424")) city = "Pachora";
+    else if(code.startsWith("423")) city = "Jamner";
+
+    deliveryCity.textContent = city;
+    localStorage.setItem("deliveryCode", city);
+    deliveryOptions.style.display = 'none';
+
+  } else {
+    alert("Enter valid 6-digit code");
+  }
+
+});
+
+/* Bahar click karo to close */
+document.addEventListener('click', function(){
+  deliveryOptions.style.display = 'none';
+});
+
+/* Saved city load */
+const savedCode = localStorage.getItem("deliveryCode");
+if(savedCode){
+  deliveryCity.textContent = savedCode;
+}
+</script>
+</script>
 
   <div class="search-wrapper">
     <div class="search-bar">
@@ -333,19 +423,6 @@ function checkout(){
   renderCart();
 }
 
-// ===== DELIVERY =====
-const deliveryTab = document.getElementById('delivery-tab');
-const deliveryOptions = document.getElementById('delivery-options');
-const deliveryCity = document.getElementById('delivery-city');
-deliveryTab.addEventListener('click', ()=>{
-  deliveryOptions.style.display = deliveryOptions.style.display==='none'?'block':'none';
-});
-document.querySelectorAll('.city-option').forEach(opt=>{
-  opt.addEventListener('click', ()=>{
-    deliveryCity.textContent=opt.textContent; 
-    deliveryOptions.style.display='none';
-  });
-});
 
 // ===== LOGIN =====
 const signInBtn = document.getElementById('sign-in-btn');
